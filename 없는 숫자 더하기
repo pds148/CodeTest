@@ -1,0 +1,19 @@
+class Solution {
+    public int solution(int[] numbers) {
+        boolean[] exist = new boolean[10];
+        
+        for (int num : numbers) {
+            exist[num] = true;
+        }
+        
+        int sum = 0;
+        for (int i=0; i<=9; i++) {
+            if (!exist[i]) {
+                sum += i;
+            }
+        }
+        
+        int answer = sum;
+        return answer;
+    }
+}
