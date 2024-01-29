@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] ingredient) {
+        int answer = 0;
+        
+        Stack<Integer> ins = new Stack<Integer>();
+        
+        for (int in : ingredient) {
+            ins.push(in);
+            
+            if (ins.size() >= 4) {
+                if (ins.get(ins.size()-4) == 1
+                    && ins.get(ins.size()-3) == 2
+                    && ins.get(ins.size()-2) == 3
+                    && ins.get(ins.size()-1) == 1) {
+                    answer++;
+                    ins.pop(); ins.pop(); ins.pop(); ins.pop();
+                }
+            }
+        }
+        return answer;
+    }
+}
