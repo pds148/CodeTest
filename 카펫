@@ -1,0 +1,22 @@
+import java.lang.Math;
+
+class Solution {
+    public int[] solution(int brown, int yellow) {
+        int[] answer = {0, 0};
+        int garo = 0, sero = 0;
+        
+        for (garo = yellow; garo >= Math.sqrt(yellow); garo--) {
+            if (yellow%garo == 0) {
+                sero = yellow/garo;
+                
+                if ((garo+2)*2 + 2*sero == brown) break;
+            }
+        }
+        System.out.println(garo + " " + sero);
+        
+        answer[0] = garo+2;
+        answer[1] = sero+2;
+        
+        return answer;
+    }
+}
