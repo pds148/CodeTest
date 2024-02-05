@@ -1,0 +1,30 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public int solution(int k, int[] tangerine) {
+        int answer = 0;
+        Map<Integer, Integer> maps = new HashMap<>();
+        
+        for (int i : tangerine) {
+            maps.put(i, maps.getOrDefault(i, 0) + 1);
+        }
+        
+        List<Integer> numberList = new ArrayList<>(maps.keySet());
+        
+        numberList.sort(((k1, k2) -> maps.get(k2) - maps.get(k1)));
+            
+        for (Integer i : numberList) {
+            if (k <= 0) {
+                break;
+            }
+
+            answer++;
+            k -= maps.get(i);
+        }   
+        
+        return answer;
+    }
+}
