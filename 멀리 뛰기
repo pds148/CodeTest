@@ -1,0 +1,24 @@
+class Solution {
+    public int solution(int[] arr) {
+        int answer = 0;
+        
+        if (arr.length == 1) return arr[0];
+        
+        int n = num(arr[0], arr[1]);
+        answer = (arr[0] * arr[1] / n);
+        
+        if (arr.length > 2) {
+            for (int i=2; i<arr.length; i++) {
+                n = num(answer, arr[i]);
+                answer = (answer * arr[i] / n);
+            }
+        }
+        return answer;
+    }
+    
+    private static int num(int i, int j) {
+        int z = i % j;
+        if (z == 0) return j;
+        else return num(j, z);
+    }
+}
