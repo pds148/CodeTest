@@ -1,0 +1,21 @@
+class Solution {
+    
+    public int answer = 0;
+    public boolean[] visit;
+    
+    public int solution(int k, int[][] dungeons) {
+        visit = new boolean[dungeons.length];
+        dge(0, k, dungeons);
+        return answer;
+    }
+    
+    public void dge(int cnt, int fatigue, int[][] dge) {
+        for (int i=0; i<dge.length; i++) {
+            if (visit[i] || dge[i][0]  > fatigue) continue;
+            visit[i] = true;
+            dge(cnt+1, fatigue-dge[i][1], dge);
+            visit[i] = false;
+        }
+        answer = Math.max(cnt, answer);
+    }
+}
