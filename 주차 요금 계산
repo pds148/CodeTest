@@ -1,0 +1,74 @@
+import java.util.*;
+
+class Solution {
+    
+    public static class Parks {
+        int times = 0;
+        int in_times = -1;
+        boolean isOuts = false;
+    }
+    public int[] solution(int[] fees, String[] records) {
+        ArrayList<String> car = new ArrayList<String>();
+        HashMap<String, Parks> inouts = new HashMap<String, Parks>();
+        
+        for (int i=0; i<records.length; i++) {
+            String[] str = records[i].split(" ");
+            if (str[2].equals("IN")) {
+                Parks parks;
+                int times = str_to_times(str[0]);
+                if (inouts.containsKey(str[1])) {
+                    parks = inouts.get(str[1]);
+                } else {
+                    car.add(str[1]);
+                    parks = new Parks();
+                }
+                parks.in_times = times;
+                parks.isOuts = false;
+                inouts.put(str[1], parks);
+            } else {
+                int out_times = str_to_times(str[0]);
+                Parks parks = inouts.get(str[1]);
+                int diff = out_times - parks.in_times;
+                parks.times += diff;
+                parks.isOuts = true;
+            }
+        }
+        
+        int[] answer = new int[car.size()];
+        Collections.sort(car);
+        
+        for (int i = 0; i < car.size(); i++) {
+            String car_num = car.get(i);
+            if (inouts.get(car_num).isOuts) {
+                answer[i] = cal_money(inouts.get(car_num).times, fees);
+            } else {
+                int it_time = inouts.get(car_num).in_times;
+                int out_time = str_to_times("23:59");
+                answer[i] = cal_money(inouts.get(car_num).times + out_time - it_time, fees);
+            }
+            System.out.println(answer[i]); 
+        }
+
+        
+        return answer;
+    }
+    
+    public static int cal_money(int diff, int[] fees) {
+        int money = 0;
+        if (diff > fees[0]) {
+            int diff_default = diff - fees[0];
+            if (diff_default % fees[2] == 0) {
+                return fees[1] + (diff_default / fees[2]) * fees[3];
+            } else {
+                return fees[1] + (diff_default / fees[2]+1) * fees[3];
+            }
+        } else {
+            return fees[1];
+        }
+    }
+    
+    public static int str_to_times(String t) {
+        String[] str = t.split(":");
+        return Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1]);
+    }
+}
