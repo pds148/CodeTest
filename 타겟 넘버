@@ -1,0 +1,18 @@
+class Solution {
+    
+    int answer = 0;
+    
+    public int solution(int[] numbers, int target) {
+        dfr(numbers, 0, target, 0);
+        return answer;
+    }
+
+    public void dfr(int[] numbers, int depth, int target, int sum) {
+        if (depth == numbers.length) {
+            if (target == sum) answer++;
+        } else {
+            dfr(numbers, depth+1, target, sum+numbers[depth]);
+            dfr(numbers, depth+1, target, sum-numbers[depth]);
+        }
+    }
+}
