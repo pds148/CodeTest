@@ -1,0 +1,27 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] topping) {
+        int answer = 0;
+        int size = topping.length;
+        
+        HashSet<Integer> firsts = new HashSet<>();
+        HashMap<Integer, Integer> seconds = new HashMap<>();
+        
+        firsts.add(topping[0]);
+        for (int i=1; i<size; i++) {
+            seconds.put(topping[i], seconds.getOrDefault(topping[i], 0) + 1);
+        }
+        
+        for (int i=1; i<size; i++) {
+            firsts.add(topping[i]);
+            seconds.put(topping[i], seconds.get(topping[i]) - 1);
+            if (seconds.get(topping[i]) == 0) {
+                seconds.remove(topping[i]);
+            }
+            if (firsts.size() == seconds.size()) answer++;
+        }
+        
+        return answer;
+    }
+}
