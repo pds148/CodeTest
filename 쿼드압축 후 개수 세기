@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+class Solution {
+    public int[] solution(int[][] arr) {
+        int[] answer = new int[2];
+        compress(arr, 0, 0, arr.length, answer);
+        return answer;
+    }
+    
+    private void compress(int[][] arr, int startX, int startY, int size, int[] answer) {
+        if (size == 1) {
+            answer[arr[startX][startY]]++;
+            return;
+        }
+        
+        int num = arr[startX][startY];
+        boolean isSame = true;
+        
+        for (int i=startX; i<startX+size; i++) {
+            for (int j=startY; j<startY + size; j++) {
+                if (arr[i][j] != num) {
+                    isSame = false;
+                    break;
+                }
+            }
+            if (!isSame)
+                break;
+        }
+        
+        if (isSame) {
+            answer[num]++;
+            return;
+        }
+        
+        int newSize = size / 2;
+        compress(arr, startX, startY, newSize, answer);
+        compress(arr, startX, startY+newSize, newSize, answer);
+        compress(arr, startX+newSize, startY, newSize, answer);
+        compress(arr, startX+newSize, startY+newSize, newSize, answer);
+    }
+}
