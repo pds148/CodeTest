@@ -1,0 +1,35 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public int solution(int[] queue1, int[] queue2) {
+        int answer = 0;
+        
+        long totals = 0;
+        long q1Sums = 0;
+        Queue<Integer> qq1 = new LinkedList<Integer>();
+        Queue<Integer> qq2 = new LinkedList<Integer>();
+        for (int i=0; i<queue1.length; i++) {
+            totals += queue1[i]+queue2[i];
+            q1Sums += queue1[i];
+            qq1.add(queue1[i]);
+            qq2.add(queue2[i]);
+        }
+        if (totals%2!=0) return -1;
+        
+        long targets = totals / 2;
+        while(true) {
+            if (answer>(queue1.length+queue2.length)*2) return -1;
+            if (q1Sums == targets) break;
+            else if (q1Sums>targets) {
+                q1Sums -= qq1.peek();
+                qq2.add(qq1.poll());
+            } else {
+                q1Sums += qq2.peek();
+                qq1.add(qq2.poll());
+            }
+            answer++;
+        }
+        return answer;
+    }
+}
