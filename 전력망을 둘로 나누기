@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int n, int[][] wires) {
+        List<List<Integer>> graph = new ArrayList<>();
+        
+        for (int i=0; i<=n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        
+        for (int[] wire : wires) {
+            graph.get(wire[0]).add(wire[1]);
+            graph.get(wire[1]).add(wire[0]);
+        }
+        
+        int minDifference = Integer.MAX_VALUE;
+        
+        for (int[] wire : wires) {
+            int v1 = wire[0];
+            int v2 = wire[1];
+            
+            int count1 = countNodes(n, graph, v1, v2);
+            int count2 = n - count1;
+            
+            minDifference = Math.min(minDifference, Math.abs(count1 - count2));
+        }
+
+        return minDifference;
+    }
+    
+    private int countNodes(int n, List<List<Integer>> graph, int exclude1, int exclude2) {
+        boolean[] visited = new boolean[n+1];
+        visited[exclude1] = true;
+        visited[exclude2] = true;
+        int count = 0;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        visited[1] = true;
+        
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            count++;
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    stack.push(neighbor);
+                }
+            }
+        }
+        return count;
+    }
+}
