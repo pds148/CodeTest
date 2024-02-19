@@ -1,0 +1,56 @@
+import java.util.*;
+
+class Solution {
+    
+    private int[] dr = {-1, 1, 0, 0};
+    private int[] dc = {0, 0, -1, 1};
+    
+    public int[] solution(String[] maps) {
+        int rows = maps.length;
+        int cols = maps[0].length();
+        int[][] grid = new int[rows][cols];
+        boolean[][] visited = new boolean[rows][cols];
+        List<Integer> islandDays = new ArrayList<>();
+        
+        for (int i=0; i<rows; i++) {
+            for (int j=0; j<cols; j++) {
+                if (maps[i].charAt(j) != 'X') {
+                    grid[i][j] = Character.getNumericValue(maps[i].charAt(j));
+                } else {
+                    grid[i][j] = 0;
+                }
+            }
+        }
+        
+        for (int i=0; i<rows; i++) {
+            for (int j=0; j<cols; j++) {
+                if (grid[i][j] != 0 && !visited[i][j]) {
+                    islandDays.add(dfs(grid, visited, i, j, rows, cols));
+                }
+            }
+        }
+        
+        Collections.sort(islandDays);
+        
+        if (islandDays.isEmpty()) {
+            return new int[]{-1};
+        }
+        
+        return islandDays.stream().mapToInt(Integer::intValue).toArray();
+    }
+    
+    private int dfs(int[][] grid, boolean[][] visited, int row, int col, int rows, int cols) {
+        visited[row][col] = true;
+        int days = grid[row][col];
+        
+        for (int i=0; i<4; i++) {
+            int newRow = row + dr[i];
+            int newCol = col + dc[i];
+            
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && grid[newRow][newCol] != 0 && !visited[newRow][newCol]) {
+                days += dfs(grid, visited, newRow, newCol, rows, cols);
+            }
+        }
+        return days;
+    }
+}
